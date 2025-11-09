@@ -22,9 +22,11 @@ function Test-Admin {
 if ((Test-Admin) -eq $false)  {
     if ($elevated) {
         # tried to elevate, did not work, aborting
+    } elseif ($myinvocation.MyCommand.Definition) {
+        # Running from file
+        Start-Process powershell.exe -Verb RunAs -ArgumentList ('-noprofile -noexit -file "{0}" -elevated' -f ($myinvocation.MyCommand.Definition))
     } else {
         # Start-Process powershell.exe -Verb RunAs -ArgumentList ('-noprofile -noexit -file "{0}" -elevated' -f ($myinvocation.MyCommand.Definition))
-        # From an elevated prompt or a shortcut:
         Start-Process powershell.exe -Verb RunAs -ArgumentList "-noprofile -noexit -command $URL"
     }
     exit
