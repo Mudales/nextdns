@@ -127,10 +127,10 @@ try {
 }
 catch {
     Write-Log "Uninstallation failed: $_" -Level "ERROR"
-    Start-Sleep 5
+    Start-Sleep 3
     exit 1
 }
 
 Write-Host "`nNextDNS has been removed from your system." -ForegroundColor Cyan
-Start-Sleep 5
+Start-Sleep 3
 exit
