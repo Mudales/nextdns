@@ -10,7 +10,7 @@
 param(
     [switch]$Elevated,
     $ReleaseUrl = "https://github.com/Mudales/nextdns/files/14027656/nextdns_1.41.0_windows_amd64_2.zip",
-    $URL = 'irm https://raw.githubusercontent.com/Mudales/nextdns/main/uninstaller.ps1 | iex'
+    $URL = "irm https://raw.githubusercontent.com/Mudales/nextdns/main/uninstall.ps1 | iex"
 )
 
 function Test-Admin {
@@ -24,7 +24,7 @@ if ((Test-Admin) -eq $false) {
     } else {
         Start-Process powershell.exe -Verb RunAs -ArgumentList "-noprofile -noexit -command $URL"
     }
-    Start-Sleep 4
+    Start-Sleep 2
     exit
 }
 
@@ -124,7 +124,7 @@ function Uninstall-NextDNS {
         if ($exe) {
             # Uninstall NextDNS service
             Write-Log "Uninstalling NextDNS service..."
-            $process = Start-Process -FilePath $exe -ArgumentList "uninstall" -Verb RunAs -PassThru -Wait -NoNewWindow
+            $process = Start-Process -FilePath $exe -ArgumentList "uninstall" -PassThru -Wait -NoNewWindow
             
             if ($process.ExitCode -eq 0) {
                 Write-Log "Service uninstalled successfully" -Level "SUCCESS"
@@ -163,7 +163,7 @@ function Uninstall-NextDNS {
     }
     catch {
         Write-Log "Uninstallation failed: $($_.Exception.Message)" -Level "ERROR"
-        Start-Sleep 5
+        Start-Sleep 3
         exit 1
     }
 }
@@ -172,5 +172,5 @@ function Uninstall-NextDNS {
 Write-Log "Starting NextDNS uninstallation process..."
 Uninstall-NextDNS
 Write-Log "Uninstallation process completed"
-Start-Sleep 5
+Start-Sleep 3
 exit
