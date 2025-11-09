@@ -13,9 +13,9 @@
 param(
     [switch]$Elevated,
     
-    [string]$ReleaseUrl = "https://github.com/refa3211/nextdns/files/14027656/nextdns_1.41.0_windows_amd64_2.zip",
+    [string]$ReleaseUrl = "https://github.com/Mudales/nextdns/files/14027656/nextdns_1.41.0_windows_amd64_2.zip",
     
-    [string]$ScriptUrl = "https://raw.githubusercontent.com/refa3211/nextdns/main/uninstall.ps1"
+    [string]$ScriptUrl = "https://raw.githubusercontent.com/Mudales/nextdns/main/uninstall.ps1"
 )
 
 function Test-Admin {
@@ -26,7 +26,7 @@ function Test-Admin {
 if ((Test-Admin) -eq $false) {
     if ($Elevated) {
         Write-Host "Failed to obtain administrator privileges." -ForegroundColor Red
-        Start-Sleep 5
+        Start-Sleep 2
         exit 1
     }
     
