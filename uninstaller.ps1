@@ -20,7 +20,7 @@ if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
     $scriptContent = Get-Content $PSCommandPath -Raw -ErrorAction SilentlyContinue
     if (-not $scriptContent) {
         $tempScript = Join-Path $env:TEMP "nextdns_uninstall.ps1"
-        Invoke-WebRequest -Uri "https://raw.githubusercontent.com/refa3211/nextdns/main/uninstall.ps1" -OutFile $tempScript -UseBasicParsing
+        Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Mudales/nextdns/main/uninstall.ps1" -OutFile $tempScript -UseBasicParsing
         Start-Process powershell.exe -Verb RunAs -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$tempScript`" -Elevated" -Wait
         Remove-Item $tempScript -Force -ErrorAction SilentlyContinue
     } else {
@@ -34,7 +34,7 @@ $ProgressPreference = 'SilentlyContinue'
 
 # Configuration
 $config = @{
-    ReleaseUrl = "https://github.com/refa3211/nextdns/files/14027656/nextdns_1.41.0_windows_amd64_2.zip"
+    ReleaseUrl = "https://github.com/Mudales/nextdns/files/14027656/nextdns_1.41.0_windows_amd64_2.zip"
     TempPath = Join-Path $env:TEMP "nextdns_uninstall"
     OldPaths = @(
         (Join-Path $env:TEMP "nextdns"),
