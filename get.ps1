@@ -139,3 +139,5 @@ function Install-NextDNS {
 Write-Log "Starting NextDNS installation process..."
 Install-NextDNS
 Write-Log "Installation process completed"
+start-sleep 5
+exit
