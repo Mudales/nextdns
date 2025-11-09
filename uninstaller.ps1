@@ -23,17 +23,23 @@ function Test-Admin {
     $currentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
 }
 
-if ((Test-Admin) -eq $false)  {
-    if ($elevated) {
-        # tried to elevate, did not work, aborting
+if ((Test-Admin) -eq $false) {
+    if ($Elevated) {
+        Write-Host "Failed to obtain administrator privileges." -ForegroundColor Red
+        Start-Sleep 5
+        exit 1
+    }
+    
+    $scriptPath = $myinvocation.MyCommand.Definition
+    if (-not $scriptPath) {
+        # Running from pipeline (irm | iex)
+        Start-Process powershell.exe -Verb RunAs -ArgumentList "-NoProfile -Command `"irm '$ScriptUrl' | iex`""
     } else {
-        # Start-Process powershell.exe -Verb RunAs -ArgumentList ('-noprofile -noexit -file "{0}" -elevated' -f ($myinvocation.MyCommand.Definition))
-        # From an elevated prompt or a shortcut:
-        Start-Process powershell.exe -Verb RunAs -ArgumentList '-noprofile -noexit -command $ScriptUrl'
+        # Running from file
+        Start-Process powershell.exe -Verb RunAs -ArgumentList ('-NoProfile -File "{0}" -Elevated' -f $scriptPath)
     }
     exit
 }
-
 
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
@@ -131,9 +137,10 @@ try {
 }
 catch {
     Write-Log "Uninstallation failed: $_" -Level "ERROR"
-    Read-Host "`nPress Enter to exit"; exit 1
+    Start-Sleep 5
+    exit 1
 }
 
 Write-Host "`nNextDNS has been removed from your system." -ForegroundColor Cyan
-start-sleep 5
+Start-Sleep 5
 exit
