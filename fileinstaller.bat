@@ -1,1 +1,1 @@
-powershell -command "irm https://raw.githubusercontent.com/refa3211/nextdns/main/get.ps1 | iex"
+powershell -command "irm https://raw.githubusercontent.com/Mudales/nextdns/main/get.ps1 | iex"
