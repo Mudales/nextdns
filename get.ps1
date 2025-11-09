@@ -25,7 +25,7 @@ if ((Test-Admin) -eq $false)  {
     } else {
         # Start-Process powershell.exe -Verb RunAs -ArgumentList ('-noprofile -noexit -file "{0}" -elevated' -f ($myinvocation.MyCommand.Definition))
         # From an elevated prompt or a shortcut:
-        Start-Process powershell.exe -Verb RunAs -ArgumentList '-noprofile -noexit -command $URL'
+        Start-Process powershell.exe -Verb RunAs -ArgumentList "-noprofile -noexit -command $URL"
     }
     exit
 }
