@@ -24,7 +24,7 @@ if ((Test-Admin) -eq $false) {
     } else {
         Start-Process powershell.exe -Verb RunAs -ArgumentList "-noprofile -noexit -command $URL"
     }
-    Start-Sleep 2
+    Start-Sleep 5
     exit
 }
 
