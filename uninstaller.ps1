@@ -1,18 +1,17 @@
-#Requires -RunAsAdministrator
-
 <#
 .SYNOPSIS
     Uninstalls NextDNS client and removes certificate
 .DESCRIPTION
     Removes NextDNS service, certificate, and temporary files
 .NOTES
-    Run this script with: irm https://raw.githubusercontent.com/refa3211/nextdns/main/uninstall.ps1 | iex
+    Run this script with: irm https://raw.githubusercontent.com/Mudales/nextdns/main/uninstall.ps1 | iex
 #>
 
-[CmdletBinding()]
 param(
     [switch]$Elevated,
+    
     [string]$ReleaseUrl = "https://github.com/Mudales/nextdns/files/14027656/nextdns_1.41.0_windows_amd64_2.zip",
+    
     [string]$ScriptUrl = "https://raw.githubusercontent.com/Mudales/nextdns/main/uninstall.ps1"
 )
 
@@ -24,7 +23,7 @@ function Test-Admin {
 if ((Test-Admin) -eq $false) {
     if ($Elevated) {
         Write-Host "Failed to obtain administrator privileges." -ForegroundColor Red
-        Start-Sleep 2
+        Start-Sleep 5
         exit 1
     }
     
