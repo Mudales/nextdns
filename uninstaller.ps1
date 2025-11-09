@@ -12,9 +12,7 @@
 [CmdletBinding()]
 param(
     [switch]$Elevated,
-    
     [string]$ReleaseUrl = "https://github.com/Mudales/nextdns/files/14027656/nextdns_1.41.0_windows_amd64_2.zip",
-    
     [string]$ScriptUrl = "https://raw.githubusercontent.com/Mudales/nextdns/main/uninstall.ps1"
 )
 
