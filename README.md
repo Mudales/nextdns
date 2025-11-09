@@ -11,7 +11,7 @@ ___________________________________________________________
 
 copy and past the Install command
 ```
-  irm https://raw.githubusercontent.com/refa3211/nextdns/main/get.ps1 | iex
+  irm https://raw.githubusercontent.com/Mudales/nextdns/main/get.ps1 | iex
 ```
 
 ___________________________________________________________
@@ -36,4 +36,4 @@ This repository contains a PowerShell script to uninstall NextDNS from your Wind
    Copy the following command:
 
    ```
-    irm https://raw.githubusercontent.com/refa3211/nextdns/main/uninstaller.ps1 | iex
+    irm https://raw.githubusercontent.com/Mudales/nextdns/main/uninstaller.ps1 | iex
