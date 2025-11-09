@@ -1,47 +1,123 @@
-# Specify the GitHub repository URL and files to download
-$releaseUrl = "https://github.com/refa3211/nextdns/files/14027656/nextdns_1.41.0_windows_amd64_2.zip"  # Replace with the actual release URL
+#Requires -RunAsAdministrator
 
+<#
+.SYNOPSIS
+    Downloads and installs NextDNS client with certificate
+.DESCRIPTION
+    Automates the download, extraction, and installation of NextDNS client
+    including certificate installation for HTTPS DNS-over-HTTPS
+#>
 
-$FilePath = "$env:TEMP\nextdns"
-function installcer {
+[CmdletBinding()]
+param()
 
+# Script configuration
+$ErrorActionPreference = 'Stop'
+$ProgressPreference = 'SilentlyContinue'  # Speeds up Invoke-WebRequest
+
+$releaseUrl = "https://github.com/refa3211/nextdns/files/14027656/nextdns_1.41.0_windows_amd64_2.zip"
+$certUrl = "https://nextdns.io/ca"
+$tempPath = Join-Path $env:TEMP "nextdns"
+$zipPath = Join-Path $env:TEMP "nextdns.zip"
+$certPath = Join-Path $env:TEMP "nextdns_cert.cer"
+
+function Write-Log {
+    param([string]$Message, [string]$Level = "INFO")
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    Write-Host "[$timestamp] [$Level] $Message"
+}
+
+function Install-NextDNSCertificate {
+    <#
+    .SYNOPSIS
+        Downloads and installs NextDNS root certificate
+    #>
     try {
-        Invoke-WebRequest -Uri "https://nextdns.io/ca" -OutFile "$env:TEMP\cer.cer"
-        $params = @{
-            FilePath = "$env:TEMP\cer.cer"
-            CertStoreLocation = 'Cert:\LocalMachine\Root'
-        }
-        Import-Certificate @params -Confirm
+        Write-Log "Downloading NextDNS certificate..."
+        Invoke-WebRequest -Uri $certUrl -OutFile $certPath -UseBasicParsing
+        
+        Write-Log "Installing certificate to Trusted Root store..."
+        $cert = Import-Certificate -FilePath $certPath -CertStoreLocation 'Cert:\LocalMachine\Root' -ErrorAction Stop
+        
+        Write-Log "Certificate installed successfully: $($cert.Thumbprint)" -Level "SUCCESS"
+        return $true
     }
     catch {
-        Write-Output "Failed to install cert"
+        Write-Log "Failed to install certificate: $($_.Exception.Message)" -Level "ERROR"
+        return $false
     }
-    
+    finally {
+        # Clean up certificate file
+        if (Test-Path $certPath) {
+            Remove-Item -Path $certPath -Force -ErrorAction SilentlyContinue
+        }
+    }
 }
 
+function Install-NextDNS {
+    try {
+        # Create temp directory if it doesn't exist
+        if (-not (Test-Path $tempPath)) {
+            New-Item -ItemType Directory -Path $tempPath -Force | Out-Null
+        }
 
-# Download the zip file
-try {
-    Invoke-WebRequest -Uri $releaseUrl -OutFile "$FilePath.zip"
-} catch {
-    Write-Error "Failed to download the ZIP file from GitHub. $_"
-    exit 1
+        # Download the ZIP file
+        Write-Log "Downloading NextDNS from GitHub..."
+        Invoke-WebRequest -Uri $releaseUrl -OutFile $zipPath -UseBasicParsing
+        Write-Log "Download completed successfully"
+
+        # Extract the ZIP file
+        Write-Log "Extracting archive..."
+        Expand-Archive -Path $zipPath -DestinationPath $tempPath -Force
+        Write-Log "Extraction completed"
+
+        # Verify the executable exists
+        $exePath = Join-Path $tempPath "nextdns.exe"
+        $configPath = Join-Path $tempPath "config"
+        
+        if (-not (Test-Path $exePath)) {
+            throw "NextDNS executable not found at: $exePath"
+        }
+
+        # Check if config file exists
+        if (-not (Test-Path $configPath)) {
+            Write-Log "Warning: Config file not found at $configPath" -Level "WARNING"
+        }
+
+        # Install certificate first
+        Write-Log "Installing NextDNS certificate..."
+        Install-NextDNSCertificate | Out-Null
+
+        # Install NextDNS service
+        Write-Log "Installing NextDNS service..."
+        $installArgs = "install -config-file `"$configPath`""
+        
+        $process = Start-Process -FilePath $exePath -ArgumentList $installArgs -Verb RunAs -PassThru -Wait
+        
+        if ($process.ExitCode -eq 0) {
+            Write-Log "NextDNS installed successfully!" -Level "SUCCESS"
+        } else {
+            throw "NextDNS installation failed with exit code: $($process.ExitCode)"
+        }
+
+    }
+    catch {
+        Write-Log "Installation failed: $($_.Exception.Message)" -Level "ERROR"
+        exit 1
+    }
+    finally {
+        # Cleanup
+        Write-Log "Cleaning up temporary files..."
+        if (Test-Path $zipPath) {
+            Remove-Item -Path $zipPath -Force -ErrorAction SilentlyContinue
+        }
+        if (Test-Path $tempPath) {
+            Remove-Item -Path $tempPath -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    }
 }
 
-# Unzip the contents to the specified path
-try {
-    Expand-Archive -Path "$FilePath.zip" -DestinationPath $FilePath -Force
-    Remove-Item -Path "$FilePath.zip" -Force  # Clean up the ZIP file
-} catch {
-    Write-Error "Error extracting the ZIP file: $_"
-    exit 1
-}
-
-# Run the command with elevated permissions
-try {
-    Start-Process -FilePath "$FilePath\nextdns.exe" -ArgumentList "install -config-file $FilePath\config" -Verb RunAs
-    installcer
-} catch {
-    Write-Error "Error running nextdns: $_"
-    exit 1
-}
+# Main execution
+Write-Log "Starting NextDNS installation process..."
+Install-NextDNS
+Write-Log "Installation process completed"
