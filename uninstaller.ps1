@@ -18,31 +18,25 @@ param(
     [string]$ScriptUrl = "https://raw.githubusercontent.com/refa3211/nextdns/main/uninstall.ps1"
 )
 
-# Self-elevation logic
+[CmdletBinding()]
+param([switch]$Elevated)
+
 function Test-Admin {
     $currentUser = New-Object Security.Principal.WindowsPrincipal $([Security.Principal.WindowsIdentity]::GetCurrent())
     $currentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
 }
 
-if ((Test-Admin) -eq $false) {
-    if ($Elevated) {
-        Write-Host "Failed to obtain administrator privileges." -ForegroundColor Red
-        Read-Host "Press Enter to exit"; exit 1
-    }
-    
-    $scriptPath = $myinvocation.MyCommand.Definition
-    if (-not $scriptPath) {
-        # Running from pipeline (irm | iex)
-        $tempScript = Join-Path $env:TEMP "nextdns_uninstall.ps1"
-        Invoke-WebRequest -Uri $ScriptUrl -OutFile $tempScript -UseBasicParsing
-        Start-Process powershell.exe -Verb RunAs -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$tempScript`" -Elevated" -Wait
-        Remove-Item $tempScript -Force -ErrorAction SilentlyContinue
+if ((Test-Admin) -eq $false)  {
+    if ($elevated) {
+        # tried to elevate, did not work, aborting
     } else {
-        # Running from file
-        Start-Process powershell.exe -Verb RunAs -ArgumentList ('-NoProfile -ExecutionPolicy Bypass -File "{0}" -Elevated' -f $scriptPath)
+        # Start-Process powershell.exe -Verb RunAs -ArgumentList ('-noprofile -noexit -file "{0}" -elevated' -f ($myinvocation.MyCommand.Definition))
+        # From an elevated prompt or a shortcut:
+        Start-Process powershell.exe -Verb RunAs -ArgumentList '-noprofile -noexit -command $ScriptUrl'
     }
     exit
 }
+
 
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
