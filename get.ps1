@@ -11,7 +11,7 @@
 [CmdletBinding()]
 param(
     [switch]$Elevated,
-    $URL = "irm https://raw.githubusercontent.com/Mudales/nextdns/main/get.ps1 | iex"
+    $URL = 'irm https://raw.githubusercontent.com/Mudales/nextdns/main/get.ps1 | iex'
 )
 
 function Test-Admin {
