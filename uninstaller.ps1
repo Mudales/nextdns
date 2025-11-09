@@ -25,7 +25,7 @@ if ((Test-Admin) -eq $false)  {
         # From an elevated prompt or a shortcut:
         Start-Process powershell.exe -Verb RunAs -ArgumentList '-noprofile -noexit -command $URL'
     }
-    start-sleep 5
+    start-sleep 2
     exit
 }
 
