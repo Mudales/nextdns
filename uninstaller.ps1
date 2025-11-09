@@ -9,7 +9,7 @@
 
 param(
     [switch]$Elevated,
-    [string]$ReleaseUrl = "https://github.com/Mudales/nextdns/files/14027656/nextdns_1.41.0_windows_amd64_2.zip",
+    $ReleaseUrl = "https://github.com/Mudales/nextdns/files/14027656/nextdns_1.41.0_windows_amd64_2.zip",
     $URL = "https://raw.githubusercontent.com/Mudales/nextdns/main/uninstall.ps1"
 )
 function Test-Admin {
@@ -25,6 +25,7 @@ if ((Test-Admin) -eq $false)  {
         # From an elevated prompt or a shortcut:
         Start-Process powershell.exe -Verb RunAs -ArgumentList '-noprofile -noexit -command $URL'
     }
+    start-sleep 5
     exit
 }
 
