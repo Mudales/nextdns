@@ -11,10 +11,10 @@ ___________________________________________________________
 
 copy and past the Install command
 ```
-  irm https://raw.githubusercontent.com/Mudales/nextdns/main/get.ps1 | iex
+  irm https://raw.githubusercontent.com/Mudales/nextdns/refs/heads/main/get.ps1 | iex
 ```
 
-___________________________________________________________
+
 ___________________________________________________________
 
 
