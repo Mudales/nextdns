@@ -25,12 +25,13 @@ if ((Test-Admin) -eq $false) {
         exit 1
     }
     
-    $scriptPath = $myinvocation.MyCommand.Definition
-    if ($scriptPath) {
-        # Running from file
-        Write-Host "Elevating from file..." -ForegroundColor Yellow
-        Start-Process powershell.exe -Verb RunAs -ArgumentList ('-NoProfile -ExecutionPolicy Bypass -File "{0}" -Elevated' -f $scriptPath)
-    } else {
+    # $scriptPath = $myinvocation.MyCommand.Definition
+    # if ($scriptPath) {
+    #     # Running from file
+    #     Write-Host "Elevating from file..." -ForegroundColor Yellow
+    #     Start-Process powershell.exe -Verb RunAs -ArgumentList ('-NoProfile -ExecutionPolicy Bypass -File "{0}" -Elevated' -f $scriptPath)
+    # } else {
+    else {
         # Running from pipeline (irm | iex)
         Write-Host "Elevating from pipeline..." -ForegroundColor Yellow
         Start-Process powershell.exe -Verb RunAs -ArgumentList "-NoProfile -ExecutionPolicy Bypass -Command $URL"
