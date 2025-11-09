@@ -139,3 +139,4 @@ catch {
 
 Write-Host "`nNextDNS has been removed from your system." -ForegroundColor Cyan
 Read-Host "Press Enter to exit"
+exit
