@@ -1,3 +1,5 @@
+#Requires -RunAsAdministrator
+
 # Define the installation path
 $FilePath = "$env:TEMP\nextdns"
 
