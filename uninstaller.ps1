@@ -18,9 +18,6 @@ param(
     [string]$ScriptUrl = "https://raw.githubusercontent.com/refa3211/nextdns/main/uninstall.ps1"
 )
 
-[CmdletBinding()]
-param([switch]$Elevated)
-
 function Test-Admin {
     $currentUser = New-Object Security.Principal.WindowsPrincipal $([Security.Principal.WindowsIdentity]::GetCurrent())
     $currentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
