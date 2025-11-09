@@ -6,33 +6,40 @@
 .DESCRIPTION
     Removes NextDNS service, certificate, and temporary files
 .NOTES
-    Run this script with: irm https://raw.githubusercontent.com/Mudales/nextdns/main/uninstall.ps1 | iex
+    Run this script with: irm https://raw.githubusercontent.com/refa3211/nextdns/main/uninstall.ps1 | iex
 #>
 
 [CmdletBinding()]
 param(
     [switch]$Elevated,
     
-    [string]$ReleaseUrl = "https://github.com/Mudales/nextdns/files/14027656/nextdns_1.41.0_windows_amd64_2.zip",
+    [string]$ReleaseUrl = "https://github.com/refa3211/nextdns/files/14027656/nextdns_1.41.0_windows_amd64_2.zip",
     
-    [string]$ScriptUrl = "https://raw.githubusercontent.com/Mudales/nextdns/main/uninstall.ps1"
+    [string]$ScriptUrl = "https://raw.githubusercontent.com/refa3211/nextdns/main/uninstall.ps1"
 )
 
 # Self-elevation logic
-if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)) {
+function Test-Admin {
+    $currentUser = New-Object Security.Principal.WindowsPrincipal $([Security.Principal.WindowsIdentity]::GetCurrent())
+    $currentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
+}
+
+if ((Test-Admin) -eq $false) {
     if ($Elevated) {
         Write-Host "Failed to obtain administrator privileges." -ForegroundColor Red
         Read-Host "Press Enter to exit"; exit 1
     }
     
-    $scriptContent = Get-Content $PSCommandPath -Raw -ErrorAction SilentlyContinue
-    if (-not $scriptContent) {
+    $scriptPath = $myinvocation.MyCommand.Definition
+    if (-not $scriptPath) {
+        # Running from pipeline (irm | iex)
         $tempScript = Join-Path $env:TEMP "nextdns_uninstall.ps1"
         Invoke-WebRequest -Uri $ScriptUrl -OutFile $tempScript -UseBasicParsing
         Start-Process powershell.exe -Verb RunAs -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$tempScript`" -Elevated" -Wait
         Remove-Item $tempScript -Force -ErrorAction SilentlyContinue
     } else {
-        Start-Process powershell.exe -Verb RunAs -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`" -Elevated"
+        # Running from file
+        Start-Process powershell.exe -Verb RunAs -ArgumentList ('-NoProfile -ExecutionPolicy Bypass -File "{0}" -Elevated' -f $scriptPath)
     }
     exit
 }
