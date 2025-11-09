@@ -9,7 +9,10 @@
 #>
 
 [CmdletBinding()]
-param([switch]$Elevated)
+param(
+    [switch]$Elevated,
+    $URL = "irm https://raw.githubusercontent.com/Mudales/nextdns/main/get.ps1 | iex"
+)
 
 function Test-Admin {
     $currentUser = New-Object Security.Principal.WindowsPrincipal $([Security.Principal.WindowsIdentity]::GetCurrent())
@@ -22,7 +25,7 @@ if ((Test-Admin) -eq $false)  {
     } else {
         # Start-Process powershell.exe -Verb RunAs -ArgumentList ('-noprofile -noexit -file "{0}" -elevated' -f ($myinvocation.MyCommand.Definition))
         # From an elevated prompt or a shortcut:
-Start-Process powershell.exe -Verb RunAs -ArgumentList '-noprofile -noexit -command "irm https://raw.githubusercontent.com/Mudales/nextdns/main/get.ps1 | iex"'
+        Start-Process powershell.exe -Verb RunAs -ArgumentList '-noprofile -noexit -command $URL'
     }
     exit
 }
