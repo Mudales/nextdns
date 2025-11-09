@@ -1,4 +1,4 @@
-# nextdns
+# NextDNS Installer
 
 ## How to Install
 1. **Open PowerShell as Administrator:**
