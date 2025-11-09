@@ -24,7 +24,7 @@ if ((Test-Admin) -eq $false) {
     } else {
         Start-Process powershell.exe -Verb RunAs -ArgumentList "-noprofile -noexit -command $URL"
     }
-    Start-Sleep 2
+    Start-Sleep 4
     exit
 }
 
@@ -163,7 +163,7 @@ function Uninstall-NextDNS {
     }
     catch {
         Write-Log "Uninstallation failed: $($_.Exception.Message)" -Level "ERROR"
-        Start-Sleep 3
+        Start-Sleep 5
         exit 1
     }
 }
@@ -172,5 +172,5 @@ function Uninstall-NextDNS {
 Write-Log "Starting NextDNS uninstallation process..."
 Uninstall-NextDNS
 Write-Log "Uninstallation process completed"
-Start-Sleep 3
+Start-Sleep 5
 exit
