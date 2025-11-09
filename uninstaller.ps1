@@ -19,6 +19,7 @@ function Test-Admin {
 }
 
 if ((Test-Admin) -eq $false) {
+    write-host "HYE" 
     if ($Elevated) {
         Write-Host "Failed to obtain administrator privileges." -ForegroundColor Red
         Start-Sleep 2
