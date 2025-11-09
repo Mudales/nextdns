@@ -5,10 +5,18 @@
     Uninstalls NextDNS client and removes certificate
 .DESCRIPTION
     Removes NextDNS service, certificate, and temporary files
+.NOTES
+    Run this script with: irm https://raw.githubusercontent.com/Mudales/nextdns/main/uninstall.ps1 | iex
 #>
 
 [CmdletBinding()]
-param([switch]$Elevated)
+param(
+    [switch]$Elevated,
+    
+    [string]$ReleaseUrl = "https://github.com/Mudales/nextdns/files/14027656/nextdns_1.41.0_windows_amd64_2.zip",
+    
+    [string]$ScriptUrl = "https://raw.githubusercontent.com/Mudales/nextdns/main/uninstall.ps1"
+)
 
 # Self-elevation logic
 if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)) {
@@ -20,7 +28,7 @@ if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
     $scriptContent = Get-Content $PSCommandPath -Raw -ErrorAction SilentlyContinue
     if (-not $scriptContent) {
         $tempScript = Join-Path $env:TEMP "nextdns_uninstall.ps1"
-        Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Mudales/nextdns/main/uninstall.ps1" -OutFile $tempScript -UseBasicParsing
+        Invoke-WebRequest -Uri $ScriptUrl -OutFile $tempScript -UseBasicParsing
         Start-Process powershell.exe -Verb RunAs -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$tempScript`" -Elevated" -Wait
         Remove-Item $tempScript -Force -ErrorAction SilentlyContinue
     } else {
@@ -34,7 +42,7 @@ $ProgressPreference = 'SilentlyContinue'
 
 # Configuration
 $config = @{
-    ReleaseUrl = "https://github.com/Mudales/nextdns/files/14027656/nextdns_1.41.0_windows_amd64_2.zip"
+    ReleaseUrl = $ReleaseUrl
     TempPath = Join-Path $env:TEMP "nextdns_uninstall"
     OldPaths = @(
         (Join-Path $env:TEMP "nextdns"),
