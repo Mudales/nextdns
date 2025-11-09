@@ -20,15 +20,21 @@ function Test-Admin {
 
 if ((Test-Admin) -eq $false) {
     if ($Elevated) {
-        # tried to elevate, did not work, aborting
-    } elseif ($myinvocation.MyCommand.Definition) {
+        Write-Host "Failed to obtain administrator privileges." -ForegroundColor Red
+        Start-Sleep 2
+        exit 1
+    }
+    
+    $scriptPath = $myinvocation.MyCommand.Definition
+    if ($scriptPath) {
         # Running from file
-        Start-Process powershell.exe -Verb RunAs -ArgumentList ('-noprofile -noexit -file "{0}" -elevated' -f ($myinvocation.MyCommand.Definition))
+        Write-Host "Elevating from file..." -ForegroundColor Yellow
+        Start-Process powershell.exe -Verb RunAs -ArgumentList ('-NoProfile -ExecutionPolicy Bypass -File "{0}" -Elevated' -f $scriptPath)
     } else {
         # Running from pipeline (irm | iex)
-        Start-Process powershell.exe -Verb RunAs -ArgumentList "-noprofile -noexit -command $URL"
+        Write-Host "Elevating from pipeline..." -ForegroundColor Yellow
+        Start-Process powershell.exe -Verb RunAs -ArgumentList "-NoProfile -ExecutionPolicy Bypass -Command $URL"
     }
-    Start-Sleep 2
     exit
 }
 
