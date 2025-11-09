@@ -10,7 +10,7 @@
 param(
     [switch]$Elevated,
     $ReleaseUrl = "https://github.com/Mudales/nextdns/files/14027656/nextdns_1.41.0_windows_amd64_2.zip",
-    $URL = "irm https://raw.githubusercontent.com/Mudales/nextdns/main/uninstall.ps1 | iex"
+    $URL = "irm https://raw.githubusercontent.com/Mudales/nextdns/main/uninstaller.ps1 | iex"
 )
 
 function Test-Admin {
