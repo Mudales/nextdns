@@ -7,7 +7,7 @@
    - Right-click on "Windows PowerShell" or "PowerShell"
    - Select "Run as administrator"
 
-
+```
 
 copy and past the Install command
 ```
