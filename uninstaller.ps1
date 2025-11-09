@@ -35,6 +35,7 @@ if ((Test-Admin) -eq $false) {
         Write-Host "Elevating from pipeline..." -ForegroundColor Yellow
         Start-Process powershell.exe -Verb RunAs -ArgumentList "-NoProfile -ExecutionPolicy Bypass -Command $URL"
     }
+    start-sleep 5
     exit
 }
 
