@@ -40,14 +40,21 @@ This repository contains a PowerShell script to uninstall NextDNS from your Wind
    ```
 
 ___________________________________________________________
+
+
+
 # Block chrome Extensions
 
-   ## Block chrome Extensions on Mac
 
+
+
+   ## Block chrome Extensions on Mac
 
    ```
    curl -fsSL https://raw.githubusercontent.com/Mudales/nextdns/refs/heads/main/EXTblock.sh | sudo bash
    ```
+
+
 
 
    ## Block chrome Extensions on Windows
