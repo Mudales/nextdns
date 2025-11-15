@@ -23,7 +23,7 @@ A collection of scripts to manage NextDNS installation and control Chrome extens
    irm https://raw.githubusercontent.com/Mudales/nextdns/main/get.ps1 | iex
 ```
 
-> ℹ️ The script will automatically elevate privileges if needed.
+
 
 ---
 
