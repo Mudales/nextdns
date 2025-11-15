@@ -103,6 +103,7 @@ By default, the following extensions are allowed:
 | Google Translate | `aapbdbdomjkkjkaonfhkkikfgjllcleb` | Translation |
 | Google Docs Offline | `kbfnbcaeplbcioakkpcpgfkobkghlhen` | Offline docs |
 | Google Drive | `ddkjiahejlhfcafbddmgiahcphecmpfh` | Cloud storage |
+| uBlock origin | `cjpalhdlnbpafiamejdnhcphjbkeiagm` | uBlock |
 
 ### 🔧 Customizing the Whitelist
 
