@@ -64,6 +64,7 @@ $whitelistedExtensions = @(
     "aapbdbdomjkkjkaonfhkkikfgjllcleb",  # Google Translate
     "kbfnbcaeplbcioakkpcpgfkobkghlhen",  # Google Docs Offline
     "ddkjiahejlhfcafbddmgiahcphecmpfh"   # Google Drive
+     "cjpalhdlnbpafiamejdnhcphjbkeiagm"   # uBlock origin
 )
 
 $index = 1
