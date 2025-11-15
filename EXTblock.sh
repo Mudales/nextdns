@@ -26,6 +26,7 @@ cat > /tmp/chrome-policy.plist << 'EOF'
         <string>aapbdbdomjkkjkaonfhkkikfgjllcleb</string>
         <string>kbfnbcaeplbcioakkpcpgfkobkghlhen</string>
         <string>ddkjiahejlhfcafbddmgiahcphecmpfh</string>
+        <string>cjpalhdlnbpafiamejdnhcphjbkeiagm</string>
     </array>
 </dict>
 </plist>
