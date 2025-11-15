@@ -37,3 +37,12 @@ This repository contains a PowerShell script to uninstall NextDNS from your Wind
 
    ```
     irm https://raw.githubusercontent.com/Mudales/nextdns/main/uninstaller.ps1 | iex
+
+
+   -------------------------------------------------------------------------------
+
+   ## Block chrome Extensions
+
+
+   ```curl -fsSL https://raw.githubusercontent.com/yourusername/yourrepo/main/block-chrome-extensions.sh | sudo bash
+   
