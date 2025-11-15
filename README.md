@@ -19,7 +19,7 @@ A collection of scripts to manage NextDNS installation and control Chrome extens
    - Select **Run as administrator**
 
 2. **Run Installation Command**
-```powershell
+```
    irm https://raw.githubusercontent.com/Mudales/nextdns/main/get.ps1 | iex
 ```
 
@@ -38,7 +38,7 @@ A collection of scripts to manage NextDNS installation and control Chrome extens
    - Select **Run as administrator**
 
 2. **Run Uninstaller Command**
-```powershell
+```
    irm https://raw.githubusercontent.com/Mudales/nextdns/main/uninstaller.ps1 | iex
 ```
 
@@ -51,7 +51,7 @@ Block all Chrome extensions except for a predefined whitelist. Perfect for manag
 ### 🍎 macOS
 
 **Prerequisites:** Terminal with `sudo` access
-```bash
+```
 curl -fsSL https://raw.githubusercontent.com/Mudales/nextdns/main/EXTblock.sh | sudo bash
 ```
 
@@ -70,7 +70,7 @@ curl -fsSL https://raw.githubusercontent.com/Mudales/nextdns/main/EXTblock.sh | 
 ### 🪟 Windows
 
 **Prerequisites:** PowerShell (Administrator privileges will be requested automatically)
-```powershell
+```
 irm https://raw.githubusercontent.com/Mudales/nextdns/main/EXTblock.ps1 | iex
 ```
 
